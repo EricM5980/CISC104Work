@@ -1,0 +1,68 @@
+using System;
+public class PlayerTwo
+{
+	private int naturalSuccessRate = 50;
+
+
+	private int amountOfDistraction = 0;
+
+    public int BullsEyes { get; private set; }
+
+	private bool DistractedSomeone = false;
+
+    public PlayerTwo()
+	{
+		BullsEyes = 0;
+	}
+
+	public bool HitBullseye()
+    {
+		Random rng = new Random();
+
+		int successRoll = rng.Next(100);
+
+		if(successRoll >= (naturalSuccessRate + amountOfDistraction))
+        {
+			BullsEyes++;
+            NewRound();
+            return true;
+        }
+        else
+        {
+            NewRound();
+            return false;
+        }
+    }
+
+	public void DistractPlayerOne(PlayerOne playerOne)
+    {
+		if (!DistractedSomeone)
+		{
+			playerOne.GetDistracted(15);
+			DistractedSomeone = true;
+		}
+    }
+
+	public void GetDistracted(int newAmountOfDistraction)
+    {
+		amountOfDistraction = newAmountOfDistraction;
+    }
+
+	private void NewRound()
+	{
+		amountOfDistraction = 0;
+		DistractedSomeone = false;
+	}
+
+    public void NewGame()
+    {
+        amountOfDistraction = 0;
+        DistractedSomeone = false;
+        BullsEyes = 0;
+    }
+
+    public int GetScoreToBeat()
+    {
+		return naturalSuccessRate + amountOfDistraction;
+    }
+}
